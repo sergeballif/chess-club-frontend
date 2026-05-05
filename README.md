@@ -1,69 +1,69 @@
-# Chess Club — Frontend
+# Chess Club Frontend
 
-This is the frontend for the Chess Club app — the files your students and teacher see in their browser.
+This project is a React-based web application for running interactive chess club sessions, with real-time voting and game management for both teachers and students.
 
-These are pre-built static files. No installation or build tools required. You just edit one configuration file and upload the files to your web host.
+## Project Structure & Purpose
+- **Frontend:** React (with Vite) for fast development and hot module reloads.
+- **Backend:** Node.js/Express server (see `../Website/chess-club-backend/index.js`), deployed via Render.com.
+- **Static Hosting:** Production frontend is built and deployed to a static site at `../Website/jennyballif.github.io/chess-club` (for GitHub Pages hosting).
 
-The backend (the server that handles real-time communication) is set up separately. See the [chess-club-backend](https://github.com/sergeballif/chess-club-backend) repo.
+## Main Packages Used
+- **react** / **react-dom**: Core UI framework.
+- **vite**: Modern dev server and build tool.
+- **chess.js**: Chess game logic and move validation.
+- **react-chessboard**: Interactive chessboard component.
+- **socket.io-client**: Real-time communication with backend for voting and state sync.
+- **prop-types**: Runtime type checking for React props.
+- **react-router-dom**: Routing (if multi-page navigation is needed).
+- **eslint** and related plugins: Linting and code quality.
 
----
+## Development Workflow
 
-## What you need
-
-- A place to host static files (any web host works — Google Sites, Netlify, GitHub Pages, your school's server, etc.)
-- Your own backend URL from Render (see the backend repo for instructions)
-
----
-
-## Step 1 — Download these files
-
-Click the green **Code** button on this GitHub page, then **Download ZIP**. Unzip the folder on your computer.
-
----
-
-## Step 2 — Edit config.js
-
-Open `config.js` in any text editor (Notepad, TextEdit, VS Code, etc.).
-
-You will see:
-
-```js
-window.CHESS_CLUB_CONFIG = {
-  socketUrl: 'https://your-backend.onrender.com',
-  teacherPasswordEnabled: false
-};
+### 1. Start Local Development
+```sh
+npm install
+npm run dev
 ```
+- Opens the app at `http://localhost:5173` with hot reload.
 
-Make the following changes:
+### 2. Build for Production
+```sh
+npm run build
+```
+- Outputs the production build to the `dist/` folder.
+- Also copies `index.html` to `404.html` and runs `node copy-routes.js` for SPA routing support.
 
-- Replace `https://your-backend.onrender.com` with the URL of your own Render backend
-- Set `teacherPasswordEnabled: true` if you set a `TEACHER_PASSWORD` on your Render backend (recommended)
+### 3. Deploy to GitHub Pages
+- Copy the contents of the `dist/` folder to your static site repo:
 
-Save the file.
+```sh
+cp -r dist/* ../Website/jennyballif.github.io/chess-club
+```
+- Commit and push changes in the `../Website/jennyballif.github.io` repo to update the live site.
+
+### 4. Backend Deployment (Render.com)
+- The backend lives at `../Website/chess-club-backend/index.js`.
+- The backend is deployed to [Render.com](https://render.com/) and is configured as a Node service.
+- To update the backend:
+  1. Commit and push changes to the GitHub repo for `chess-club-backend`.
+  2. Render.com automatically redeploys on push.
+- The frontend connects to the backend via the URL set in `src/lib/socket.js` (see `SOCKET_URL`).
+
+## Future Updates & Maintenance
+- **Frontend:**
+  - Make code changes in this repo.
+  - Test locally (`npm run dev`).
+  - Build (`npm run build`), then copy to the GitHub Pages repo as above.
+- **Backend:**
+  - Edit `../Website/chess-club-backend/index.js` (and related files).
+  - Commit and push to GitHub; Render.com will redeploy.
+- **Dependencies:**
+  - To update packages, run `npm update` or edit `package.json` and run `npm install`.
+
+## Troubleshooting
+- If the frontend is not updating, ensure you copied the latest `dist/` files and pushed to the correct GitHub Pages repo.
+- If real-time features break, check backend logs on Render.com and confirm the frontend is connecting to the correct `SOCKET_URL`.
 
 ---
 
-## Step 3 — Upload to your web host
-
-Upload all the files to your web host. The folder structure should remain intact — do not move files around.
-
-Your app is now live.
-
----
-
-## How to use the app
-
-- **Students** go to your site's main URL (e.g. `https://yourschool.com`)
-- **Teacher** goes to `https://yourschool.com/teacher`
-
-If `teacherPasswordEnabled` is set to `true`, the teacher will be prompted for the password when they navigate to `/teacher`. Students are not prompted for anything.
-
----
-
-## Updating to a new version
-
-When a new version of the frontend is released:
-
-1. Download the new ZIP from this repo
-2. Edit `config.js` again with your backend URL and password settings
-3. Re-upload all files to your web host
+For further details on project structure or advanced configuration, see the source files and comments in each module. If you get stuck, check the Vite, React, or Socket.io documentation for up-to-date usage patterns.
